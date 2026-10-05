@@ -1,26 +1,19 @@
 import pool from '../config/db.js';
 
-export const createUser = async (
-  firstName,
-  lastName,
-  email,
-  password
-) => {
-  const [result] = await pool.execute(
-    `INSERT INTO users 
-    (first_name, last_name, email, password)
-    VALUES (?, ?, ?, ?)`,
-    [firstName, lastName, email, password]
-  );
+export const getUsers = async () => {
+    const [rows] = await pool.query(
+        'SELECT * FROM Users ORDER BY created_at DESC'
+    );
 
-  return result;
+    return rows;
 };
 
-export const findUserByEmail = async (email) => {
-  const [rows] = await pool.execute(
-    `SELECT * FROM users WHERE email = ?`,
-    [email]
-  );
 
-  return rows[0];
+export const getASingleUserById = async (id) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM Users WHERE id = ?',
+        [id]
+    );
+    return rows[0];
+
 };
