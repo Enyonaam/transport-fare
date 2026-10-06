@@ -40,8 +40,32 @@ export const getFaresController = async (req, res) => {
   try {
     const fares = await getFares();
 
+    const formattedFares = fares.map((fare) => ({
+      id: fare.id,
+      amount: fare.amount,
+      effective_from: fare.effective_from,
+      effective_to: fare.effective_to,
+      created_at: fare.created_at,
+
+      route: {
+        id: fare.route_id,
+
+        from_location: {
+          id: fare.from_location_id,
+          name: fare.from_location_name,
+          description: fare.from_location_description
+        },
+
+        to_location: {
+          id: fare.to_location_id,
+          name: fare.to_location_name,
+          description: fare.to_location_description
+        }
+      }
+    }));
+
     return res.status(200).json({
-      fares
+      fares: formattedFares
     });
 
   } catch (error) {

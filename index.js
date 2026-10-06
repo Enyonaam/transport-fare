@@ -5,12 +5,14 @@ import userRoutes from "./routes/userRoutes.js";
 import fareRoutes from "./routes/fareRoutes.js";
 import locationRoutes from "./routes/locationRoutes.js";
 import routeRoutes from "./routes/routeRoutes.js";
+import cors from 'cors';
 
 
 dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);

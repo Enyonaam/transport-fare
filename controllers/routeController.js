@@ -33,12 +33,33 @@ export const createRouteController = async (req, res) => {
 };
 
 
+
 export const getRoutesController = async (req, res) => {
   try {
-    const route = await getRoutes();
+    const routes = await getRoutes();
+
+    const formattedRoutes = routes.map((route) => ({
+      id: route.id,
+
+      from_location: {
+        id: route.from_location_id,
+        name: route.from_location_name,
+        description: route.from_location_description
+      },
+
+      to_location: {
+        id: route.to_location_id,
+        name: route.to_location_name,
+        description: route.to_location_description
+      },
+
+      created_at: route.created_at
+    }));
 
     return res.status(200).json({
-      route
+      routes: {
+        route: formattedRoutes
+      }
     });
 
   } catch (error) {
@@ -49,6 +70,7 @@ export const getRoutesController = async (req, res) => {
     });
   }
 };
+
 
 export const getASingleRouteByIdController = async (req, res) => {
     try {
