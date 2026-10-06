@@ -1,4 +1,4 @@
-import { createRoute } from '../models/routeModel.js';
+import { createRoute, getRoutes, getASingleRouteById} from '../models/routeModel.js';
 
 export const createRouteController = async (req, res) => {
   try {
@@ -30,4 +30,44 @@ export const createRouteController = async (req, res) => {
       message: 'Server error'
     });
   }
+};
+
+
+export const getRoutesController = async (req, res) => {
+  try {
+    const route = await getRoutes();
+
+    return res.status(200).json({
+      route
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: 'Server error'
+    });
+  }
+};
+
+export const getASingleRouteByIdController = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+       const singleRoute = await getASingleRouteById(id);
+
+        if(!singleRoute) {
+            return res.status(404).json({
+                message: 'Single Route not found'
+            });
+        } 
+
+        res.status(200).json(singleRoute);
+         
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server error',
+            error: error.message
+        });
+    }
 };

@@ -13,3 +13,21 @@ export const createRoute = async (
 
   return result;
 };
+
+export const getRoutes = async (id) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM routes',  
+    );
+  
+    return rows;
+  
+  };
+  
+  export const getASingleRouteById = async (id) => {
+    const [rows] = await pool.query(
+        'SELECT * FROM routes WHERE id = ?',
+        [id]
+    );
+    return rows[0];
+  
+  };

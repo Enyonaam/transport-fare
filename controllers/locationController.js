@@ -35,10 +35,10 @@ export const createLocationController = async (req, res) => {
 
 export const getLocationsController = async (req, res) => {
   try {
-    const fares = await getLocations();
+    const location = await getLocations();
 
     return res.status(200).json({
-      fares
+      location
     });
 
   } catch (error) {
