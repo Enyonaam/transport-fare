@@ -1,4 +1,4 @@
-import { createLocation } from '../models/locationModel.js';
+import { createLocation, getLocations, getASingleLocationById } from '../models/locationModel.js';
 
 export const createLocationController = async (req, res) => {
   try {
@@ -31,3 +31,50 @@ export const createLocationController = async (req, res) => {
     });
   }
 };
+
+
+export const getLocationsController = async (req, res) => {
+  try {
+    const fares = await getLocations();
+
+    return res.status(200).json({
+      fares
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: 'Server error'
+    });
+  }
+};
+
+export const getASingleLocationByIdController = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+       const singleLocation = await getASingleLocationById(id);
+
+        if(!singleLocation) {
+            return res.status(404).json({
+                message: 'Single location not found'
+            });
+        } 
+
+        res.status(200).json(singleLocation);
+         
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server error',
+            error: error.message
+        });
+    }
+};
+
+
+
+
+
+
+
