@@ -17,3 +17,21 @@ export const getASingleUserById = async (id) => {
     return rows[0];
 
 };
+
+export const updateUser = async (
+    id,
+    firstName,
+    lastName,
+    email
+  ) => {
+    const [result] = await pool.execute(
+      `UPDATE users
+       SET first_name = ?,
+           last_name = ?,
+           email = ?
+       WHERE id = ?`,
+      [firstName, lastName, email, id]
+    );
+  
+    return result;
+  };
