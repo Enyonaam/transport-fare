@@ -1,4 +1,4 @@
-import { createRoute, getRoutes, getASingleRouteById} from '../models/routeModel.js';
+import { createRoute, getRoutes, getASingleRouteById, updateRoute} from '../models/routeModel.js';
 
 export const createRouteController = async (req, res) => {
   try {
@@ -93,3 +93,57 @@ export const getASingleRouteByIdController = async (req, res) => {
         });
     }
 };
+
+export const updateRouteController = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { from_location_id, to_location_id } = req.body;
+  
+      if (!from_location_id || !to_location_id) {
+        return res.status(400).json({
+          message: 'from_location_id and to_location_id are required'
+        });
+      }
+  
+      if (from_location_id === to_location_id) {
+        return res.status(400).json({
+          message: 'From location and to location cannot be the same'
+        });
+      }
+  
+      const result = await updateRoute(
+        id,
+        from_location_id,
+        to_location_id
+      );
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          message: 'Route not found'
+        });
+      }
+  
+      return res.status(200).json({
+        message: 'Route updated successfully'
+      });
+  
+    } catch (error) {
+      console.error(error);
+  
+      if (error.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({
+          message: 'This route already exists'
+        });
+      }
+  
+      if (error.code === 'ER_NO_REFERENCED_ROW_2') {
+        return res.status(400).json({
+          message: 'One or both location IDs do not exist'
+        });
+      }
+  
+      return res.status(500).json({
+        message: 'Server error'
+      });
+    }
+  };

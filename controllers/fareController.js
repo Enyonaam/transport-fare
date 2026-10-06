@@ -1,4 +1,4 @@
-import { createFare, getFares, getASingleFareById } from '../models/fareModel.js';
+import { createFare, getFares, getASingleFareById, updateFare } from '../models/fareModel.js';
 
 export const createFareController = async (req, res) => {
   try {
@@ -97,6 +97,51 @@ export const getASingleFareByIdController = async (req, res) => {
             error: error.message
         });
     }
+};
+
+
+export const updateFareController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const {
+      route_id,
+      amount,
+      effective_from,
+      effective_to
+    } = req.body;
+
+    if (!route_id || !amount || !effective_from) {
+      return res.status(400).json({
+        message: 'route_id, amount and effective_from are required'
+      });
+    }
+
+    const result = await updateFare(
+      id,
+      route_id,
+      amount,
+      effective_from,
+      effective_to
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: 'Fare not found'
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Fare updated successfully'
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: 'Server error'
+    });
+  }
 };
 
 

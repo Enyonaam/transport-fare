@@ -49,3 +49,19 @@ export const getASingleRouteById = async (id) => {
     return rows[0];
   
 };
+
+export const updateRoute = async (
+    id,
+    from_location_id,
+    to_location_id
+  ) => {
+    const [result] = await pool.execute(
+      `UPDATE routes
+       SET from_location_id = ?,
+           to_location_id = ?
+       WHERE id = ?`,
+      [from_location_id, to_location_id, id]
+    );
+  
+    return result;
+  };

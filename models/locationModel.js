@@ -29,4 +29,20 @@ export const getLocations = async (id) => {
   
   };
 
+  export const updateLocation = async (
+    id,
+    name,
+    description
+  ) => {
+    const [result] = await pool.execute(
+      `UPDATE locations
+       SET name = ?,
+           description = ?
+       WHERE id = ?`,
+      [name, description, id]
+    );
+  
+    return result;
+  };
+
 

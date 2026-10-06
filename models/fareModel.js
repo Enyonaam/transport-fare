@@ -88,3 +88,36 @@ export const getASingleFareById = async (id) => {
 
   return rows[0];
 };
+
+
+
+export const updateFare = async (
+  id,
+  route_id,
+  amount,
+  effective_from,
+  effective_to
+) => {
+  const [result] = await pool.execute(
+    `UPDATE fares
+     SET route_id = ?,
+         amount = ?,
+         effective_from = ?,
+         effective_to = ?
+     WHERE id = ?`,
+    [
+      route_id,
+      amount,
+      effective_from,
+      effective_to,
+      id
+    ]
+  );
+
+  return result;
+};
+
+
+
+
+
