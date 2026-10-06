@@ -16,6 +16,7 @@ export const createUser = async (
   return result;
 };
 
+// Function
 export const findUserByEmail = async (email) => {
   const [rows] = await pool.execute(
     `SELECT * FROM users WHERE email = ?`,
