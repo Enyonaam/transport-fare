@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from "./routes/userRoutes.js";
 import fareRoutes from "./routes/fareRoutes.js";
+import locationRoutes from "./routes/locationRoutes.js";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use( '/api/users', userRoutes);
 app.use('/api/fares', fareRoutes);
+app.use('/api/locations', locationRoutes);
+
 
 app.get('/', (req, res) => {
   res.json({ 
