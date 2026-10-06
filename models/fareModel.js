@@ -15,3 +15,22 @@ export const createFare = async (
 
   return result;
 };
+
+export const getFares = async (id) => {
+  const [rows] = await pool.query(
+      'SELECT * FROM fares',  
+  );
+
+  return rows;
+
+};
+
+export const getASingleFareById = async (id) => {
+  const [rows] = await pool.query(
+      'SELECT * FROM Fares WHERE id = ?',
+      [id]
+  );
+  return rows[0];
+
+};
+
