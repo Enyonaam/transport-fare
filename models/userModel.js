@@ -35,3 +35,13 @@ export const updateUser = async (
   
     return result;
   };
+
+  export const deleteUser = async (id) => {
+    const [result] = await pool.execute(
+      `DELETE FROM users
+       WHERE id = ?`,
+      [id]
+    );
+  
+    return result;
+  };

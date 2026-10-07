@@ -1,4 +1,4 @@
-import { createFare, getFares, getASingleFareById, updateFare } from '../models/fareModel.js';
+import { createFare, getFares, getASingleFareById, updateFare, deleteFare } from '../models/fareModel.js';
 
 export const createFareController = async (req, res) => {
   try {
@@ -133,6 +133,32 @@ export const updateFareController = async (req, res) => {
 
     return res.status(200).json({
       message: 'Fare updated successfully'
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      message: 'Server error'
+    });
+  }
+};
+
+
+export const deleteFareController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await deleteFare(id);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: 'Fare not found'
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Fare deleted successfully'
     });
 
   } catch (error) {

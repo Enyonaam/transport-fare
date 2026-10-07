@@ -46,3 +46,16 @@ export const getLocations = async (id) => {
   };
 
 
+  export const deleteLocation = async (id) => {
+    const [result] = await pool.execute(
+      `DELETE FROM locations
+       WHERE id = ?`,
+      [id]
+    );
+  
+    return result;
+  };
+
+
+
+

@@ -1,4 +1,4 @@
-import { createLocation, getLocations, getASingleLocationById, updateLocation } from '../models/locationModel.js';
+import { createLocation, getLocations, getASingleLocationById, updateLocation, deleteLocation } from '../models/locationModel.js';
 
 export const createLocationController = async (req, res) => {
   try {
@@ -103,6 +103,37 @@ export const updateLocationController = async (req, res) => {
   
     } catch (error) {
       console.error(error);
+  
+      return res.status(500).json({
+        message: 'Server error'
+      });
+    }
+  };
+
+  export const deleteLocationController = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const result = await deleteLocation(id);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          message: 'Location not found'
+        });
+      }
+  
+      return res.status(200).json({
+        message: 'Location deleted successfully'
+      });
+  
+    } catch (error) {
+      console.error(error);
+  
+      if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+        return res.status(409).json({
+          message: 'Cannot delete location because it is being used by a route'
+        });
+      }
   
       return res.status(500).json({
         message: 'Server error'

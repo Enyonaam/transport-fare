@@ -1,4 +1,5 @@
-import { createRoute, getRoutes, getASingleRouteById, updateRoute} from '../models/routeModel.js';
+import { createRoute, getRoutes, getASingleRouteById, updateRoute, deleteRoute} from '../models/routeModel.js';
+
 
 export const createRouteController = async (req, res) => {
   try {
@@ -27,11 +28,11 @@ export const createRouteController = async (req, res) => {
     console.error(error);
 
     return res.status(500).json({
-      message: 'Server error'
+        message: error.message
+    //   message: 'Server error'
     });
   }
 };
-
 
 
 export const getRoutesController = async (req, res) => {
@@ -139,6 +140,37 @@ export const updateRouteController = async (req, res) => {
       if (error.code === 'ER_NO_REFERENCED_ROW_2') {
         return res.status(400).json({
           message: 'One or both location IDs do not exist'
+        });
+      }
+  
+      return res.status(500).json({
+        message: 'Server error'
+      });
+    }
+  };
+
+  export const deleteRouteController = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const result = await deleteRoute(id);
+  
+      if (result.affectedRows === 0) {
+        return res.status(404).json({
+          message: 'Route not found'
+        });
+      }
+  
+      return res.status(200).json({
+        message: 'Route deleted successfully'
+      });
+  
+    } catch (error) {
+      console.error(error);
+  
+      if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+        return res.status(409).json({
+          message: 'Cannot delete route because it is being used by a fare'
         });
       }
   

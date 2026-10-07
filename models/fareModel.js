@@ -118,6 +118,17 @@ export const updateFare = async (
 };
 
 
+export const deleteFare = async (id) => {
+  const [result] = await pool.execute(
+    `DELETE FROM fares
+     WHERE id = ?`,
+    [id]
+  );
+
+  return result;
+};
+
+
 
 
 
